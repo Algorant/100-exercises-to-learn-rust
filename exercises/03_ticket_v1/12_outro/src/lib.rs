@@ -11,6 +11,7 @@
 // Integration here has a very specific meaning: they test **the public API** of your project.
 // You'll need to pay attention to the visibility of your types and methods; integration
 // tests can't access private or `pub(crate)` items.
+//
 
 #[derive(Debug)]
 pub struct Order {
@@ -20,55 +21,56 @@ pub struct Order {
 }
 
 impl Order {
-    pub fn new(product_name: String, quantity: u32, unit_price: u32) -> Option<Self> {
-        if product_name.is_empty() || product_name.len() > 300 || quantity == 0 || unit_price == 0 {
-            return None;
-        }
+    pub fn new(product_name: String, quantity: u32, unit_price: u32) -> Self {
+        assert!(!product_name.is_empty(), "Product name cannot be empty");
+        assert!(
+            product_name.len() <= 300,
+            "Product name cannot be longer than 300 bytes"
+        );
+        assert!(quantity > 0, "Quantity must be greater than zero");
+        assert!(unit_price > 0, "Unit price must be greater than zero");
 
-        Some(Self {
+        Order {
             product_name,
             quantity,
             unit_price,
-        })
+        }
     }
 
+    pub fn total(&self) -> u32 {
+        self.quantity * self.unit_price
+    }
+
+    // Getters
     pub fn product_name(&self) -> &str {
         &self.product_name
-    }
-
-    pub fn set_product_name(&mut self, product_name: String) -> bool {
-        if product_name.is_empty() || product_name.len() > 300 {
-            return false;
-        }
-        self.product_name = product_name;
-        true
     }
 
     pub fn quantity(&self) -> u32 {
         self.quantity
     }
 
-    pub fn set_quantity(&mut self, quantity: u32) -> bool {
-        if quantity == 0 {
-            return false;
-        }
-        self.quantity = quantity;
-        true
-    }
-
     pub fn unit_price(&self) -> u32 {
         self.unit_price
     }
 
-    pub fn set_unit_price(&mut self, unit_price: u32) -> bool {
-        if unit_price == 0 {
-            return false;
-        }
-        self.unit_price = unit_price;
-        true
+    // setters
+    pub fn set_product_name(&mut self, product_name: String) {
+        assert!(!product_name.is_empty(), "Product name cannot be empty");
+        assert!(
+            product_name.len() <= 300,
+            "Product name cannot be longer than 300 bytes"
+        );
+        self.product_name = product_name;
     }
 
-    pub fn total(&self) -> u32 {
-        self.quantity * self.unit_price
+    pub fn set_quantity(&mut self, quantity: u32) {
+        assert!(quantity > 0, "Quantity must be greater than zero");
+        self.quantity = quantity;
+    }
+
+    pub fn set_unit_price(&mut self, unit_price: u32) {
+        assert!(unit_price > 0, "Unit price must be greater than zero");
+        self.unit_price = unit_price;
     }
 }
