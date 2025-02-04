@@ -1,14 +1,15 @@
+<<<<<<< HEAD
+/// Return `true` if `n` is even, `false` otherwise.
+fn is_even(n: u32) -> bool {
+    let even = if n % 2 == 0 { true } else { false };
+    even
+=======
 /// Return `12` if `n` is even,
 /// `13` if `n` is divisible by `3`,
 /// `17` otherwise.
 fn magic_number(n: u32) -> u32 {
-    let mut result = 17;
-    if n % 2 == 0 {
-        result = 12;
-    } else if n % 3 == 0 {
-        result = 13;
-    }
-    result
+    todo!()
+>>>>>>> upstream/main
 }
 
 #[cfg(test)]
