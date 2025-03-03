@@ -2,6 +2,7 @@
 //   We've changed the enum variants to be more specific, thus removing the need for storing
 //   a `String` field into each variant.
 //   You'll also have to add `thiserror` as a dependency in the `Cargo.toml` file.
+
 use thiserror::Error;
 
 #[derive(thiserror::Error, Debug)]
