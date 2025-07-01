@@ -15,7 +15,25 @@
 use std::thread;
 
 pub fn sum(v: Vec<i32>) -> i32 {
-    todo!()
+    // Split the vector into two halves
+
+    let (left, right) = v.split_at(v.len() / 2);
+
+    let left_vec = left.to_vec();
+    let right_vec = right.to_vec();
+
+    // Sum the left half in a separate thread
+    let left_sum = thread::spawn(move || left_vec.iter().sum());
+
+    // Sum the right half in a separate thread
+    let right_sum = thread::spawn(move || right_vec.iter().sum());
+
+    // Wait for the left and right sums to finish
+    let left_sum: i32 = left_sum.join().unwrap();
+    let right_sum: i32 = right_sum.join().unwrap();
+
+    // Sum the two halves
+    left_sum + right_sum
 }
 
 #[cfg(test)]
